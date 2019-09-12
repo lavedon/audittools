@@ -28,7 +28,39 @@ $head = @"
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="utf-8"/>
-<link rel="stylesheet" type="text/css" href="style.css">
+<style>
+body { 
+    background-color: #FFF;
+    font-family: Tahoma;
+    font-size: 12pt;
+}
+td, th { 
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th {
+    color: white;
+    background-color: black;
+table, tr, td, th { 
+    padding: 2px; margin: 0px; 
+}
+tr:nth-child(odd) {
+    background-color: lightgray;
+}
+table {
+    margin-left: 50px;
+}
+
+.danger {
+    background-color: red;
+}
+
+.warn {
+    background-color: yellow;
+}
+
+
+</style>
 "
 
 
