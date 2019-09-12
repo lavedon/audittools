@@ -33,18 +33,19 @@ $head = @"
 
 
 $body = @"
-
+$clientImageHTML
+<br />
+$gmailImageHTML
+<br />
+$outlookImageHTML
 <a href="https://github.com/lavedon/audittools">Made with Luke's Audit Tools</a>
 "@
 
 $domains = Get-Content .\domains.txt 
 
-$domains | foreach-object {
 
-    resolve-dnsname -name $_;
-}
 
-ConvertTo-HTML -head $head -PostContent "<br>Report for $($clientInfo[1])<br /><i>$(Get-Date)</i>" -body $body |
+ConvertTo-HTML -head $head -PostContent "<br>Report for $($clientInfo[0])<br /><i>$(Get-Date)</i>" -body $body |
 Out-file "$env:temp\report.html" -Encoding ascii;
 
 Invoke-Item "$env:temp\report.html";
