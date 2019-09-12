@@ -37,10 +37,17 @@ $outlookImageHTML = "<img src=data:image/png;base64,$($outlookBits) alt='db util
 # Append LOGO to domains
 for ($i=1;$i -le $basicDNS.table.tr.Count-1;$i++) {
     write-host "looping $i";
+    $class = $basicDNS.CreateAttribute("class")
     $tempMX = resolve-dnsname -name $basicDNS.table.tr[$i].td[4] -type MX |
     foreach-object { 
-       
-            #UGH FUCK WHAT DO I DO!?!?!?!?!?!?!?           
+       if ($tempMX | where-object Name -like "*google*") {
+              $class.value = "google"; 
+              $basicDNS.table.tr[$i].Attributes.Append($class) | Out-Null
+           }
+       if ($tempMX | where-object Name -like "*outlook*") { 
+              $class.value = "outlook";
+              $basicDNS.table.tr[$i].Attributes.Append($class) | Out-Null
+           }
        
     }    
 }
@@ -79,6 +86,16 @@ table {
 .warn {
     background-color: yellow;
 }
+
+.google { 
+    background-color: green;
+}
+
+.outlook {
+    background-color: blue;
+
+}
+
 </style>
 "@
 
