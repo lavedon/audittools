@@ -25,14 +25,25 @@ $outlookImageHTML = "<img src=data:image/png;base64,$($outlookBits) alt='db util
 # @TODO Put This into an array
 [xml]$basicDNS = $domains | foreach-object { resolve-dnsname $_ } | ConvertTo-HTML -fragment
 # @TODO other dns-lookups
-# A records
-[xml]$ARecords = $domains | foreach-object { Resolve-DnsName -name $_ -type A } | ConvertTo-Html -fragment 
+# A records are currently redundant with $basicDNS
+# [xml]$ARecords = $domains | foreach-object { Resolve-DnsName -name $_ -type A } | ConvertTo-Html -fragment 
 # MX Records
 [xml]$MXRecords = $domains | foreach-object { Resolve-DnsName -name $_ -type MX } | ConvertTo-Html -fragment 
 # CNAME Records
 [xml]$CNAMERecords = $domains | foreach-object { Resolve-DnsName -name $_ -type CNAME } | ConvertTo-Html -fragment
 # TXT Records
 [xml]$TXTRecords = $domains | foreach-object { Resolve-DnsName -name $_ -type TXT } | ConvertTo-Html -fragment
+
+# Append LOGO to domains
+for ($i=1;$i -le $basicDNS.table.tr.Count-1;$i++) {
+    write-host "looping $i";
+    $tempMX = resolve-dnsname -name $basicDNS.table.tr[$i].td[4] -type MX |
+    foreach-object { 
+       
+            #UGH FUCK WHAT DO I DO!?!?!?!?!?!?!?           
+       
+    }    
+}
 
 $head = @"
 <!DOCTYPE html>
@@ -77,8 +88,7 @@ $body = @"
 <br>Report for $($clientInfo[0]) &nbsp;&nbsp;&nbsp;$clientImageHTML<br /><i>$(Get-Date)</i>
 $($basicDNS.InnerXml)
 <br />
-<h4>A Records</h4>
-$($ARecords.InnerXml)
+
 <br />
 <h4>MX Records</h4>
 $($MXRecords.InnerXml)
