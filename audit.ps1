@@ -1,5 +1,4 @@
 # Basic Template Not Yet Done
-Remove-Variable html
 
 # Import Client Information
 # The Name is on the first line
@@ -32,7 +31,7 @@ $outlookImageHTML = "<img src=data:image/png;base64,$($outlookBits) alt='db util
 # CNAME Records
 [xml]$CNAMERecords = $domains | foreach-object { Resolve-DnsName -name $_ -type CNAME } | ConvertTo-Html -fragment
 # TXT Records
-[xml]$TXTRecords = $domains | foreach-object { Resolve-DnsName -name $_ -type TXT } | ConvertTo-Html -fragment
+[xml]$TXTRecords = $domains | foreach-object { Resolve-DnsName -name $_ -type TXT } | foreach-object { $_  } | ConvertTo-Html -fragment
 
 # Append LOGO to domains
 for ($i=1;$i -le $basicDNS.table.tr.Count-1;$i++) {
@@ -115,10 +114,6 @@ $($CNAMERecords.InnerXml)
 <br />
 <h4>TXT Records</h4>
 $($TXTRecords.InnerXml)
-<br />
-$gmailImageHTML
-<br />
-$outlookImageHTML
 "@
 
 $domains = Get-Content .\domains.txt
