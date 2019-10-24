@@ -12,20 +12,12 @@ foreach($item in $emails) {
      $curDomain = $item.Email.split("@")[1];
      if ($curDomain) {$domains += $curDomain};
 }
-
+Write-Host "Current domains are $domains";
 Write-Host "Checking NS Records";
 
 foreach($domain in $domains) {
-    
-    $result = $null;
-    $result = Resolve-DnsName -name $domain -type NS
-    Write-Host $result;
-    
+      If ((Resolve-DnsName -Name $domain -Type NS | Select-Object -ExpandProperty Name) -match 'square') {Write-Host "Squarespace"}
+      
 }
 
-Write-Host "Current domains are $domains";
 
-# Example of making an array of NS Records
-[array]$currNSRecord = Resolve-DnsName -name gngrninja.com -type NS;
-$currNSRecord = $currNSRecord | ForEach-Object { $_.Name };
-$currNSRecord | % { if($_ -match "square") {write-host "squarespace"}};
